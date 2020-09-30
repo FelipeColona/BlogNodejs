@@ -1,0 +1,41 @@
+<div class="jumbotron">
+  <h1 class="display-4">Bem Vindo ao Blog</h1>
+  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+  <hr class="my-4">
+  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+  <a class="btn btn-primary btn-lg" href="/usuarios/registro" role="button">Crie uma conta</a>
+</div>
+
+<hr>
+
+<h2>Postagens Recentes:</h2>
+
+{{#each postagens}}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h3>{{titulo}}</h3>
+            <p>{{descricao}}</p>
+            <a href="/postagem/{{slug}}">
+                <button class="btn btn-success">Leia mais</button>
+            </a>
+            <hr>
+            <small>Categoria: {{categoria.nome}}</small> <br>
+            <small>Data de publicação: {{data}}</small>
+        </div>
+    </div>
+{{else}}
+    <h5>Nenhuma postagem</h5>
+{{/each}}
+
+<div class="card mt-4" style=" background-color: #2D2E2E;">
+    <div class="card-body" style=" background-color: #2D2E2E;">
+        <div class="container" style=" background-color: #2D2E2E;">
+            <form action="/newsletter" method="post">
+                <h4 style="color: white;">Se Inscreva em nossa Newsletter!</h4>
+                <small style="color: white;">Receba um email a cada nova postagem</small>
+                <input type="email" name="newsletter" class="form-control mt-3" placeholder="Seu email...">
+                <button type="submit" class="btn btn-light mt-3 mb-3">Inscrever-se</button>
+            </form>
+        </div>
+    </div>
+</div>

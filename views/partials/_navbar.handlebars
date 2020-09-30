@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/">Blog</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/categorias">Categorias</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/usuarios/login" tabindex="-1" aria-disabled="true">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/usuarios/registro" tabindex="-1" aria-disabled="true">Registro</a>
+      </li>
+      {{#if eAdmin}}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Admin
+            </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/admin/estatisticas">Estatisticas</a>
+            <a class="dropdown-item" href="/admin/categorias">Gerenciamento de Categorias</a>
+            <a class="dropdown-item" href="/admin/postagens">Gerenciamento de Postagens</a>
+            <a class="dropdown-item" href="/admin/usuarios">Gerenciamento de Usuários</a>
+      </li>
+      {{else}}
+      {{/if}}
+      <li>
+      </li>
+    </ul>
+    {{#if nome}}
+    <li class="na-item dropdown">
+      <a href="#" style="color:white" class="nav-link dropdown-toggle mr-4 my-2 my-sm-0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Olá {{nome}},</a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
+        <a class="dropdown-item" href="/logout">Sair</a>
+      </div>
+    </li>
+    <span></span>
+    {{else}}
+    {{/if}}
+  </div>
+</nav>

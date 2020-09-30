@@ -1,0 +1,36 @@
+<head><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous"></head>
+<h3>Usuários: </h3>
+<br>
+<form action="/admin/usuarios/procurar" method="post">
+    <input type="text" name="email" placeholder="Digite um email...">
+    <button type="submit" class="btn btn-success">Pesquisar</button>
+</form>
+<table class="mt-4">
+<tr>
+<th align="center">Email</th>
+<th align="center">Hierarquia</th>
+<th style="text-align: center;">Data de Registro</th>
+<th style="text-align: center;">Admin</th>
+<th style="text-align: center;">Deletar</th>
+</tr>
+<tr>
+<td>{{usuario.email}}</td>
+{{#if usuario.eAdmin}}
+<td class="hier">Admin</td>
+{{else}}
+<td class="hier">Usuario</td>
+{{/if}}
+<td>{{usuario.data}}</td>
+<td align="center"><a href="/admin/usuarios/hierarquia/{{usuario._id}}"><i class="fas fa-address-card"></i></a></td>
+<td align="center"><a href="/admin/usuarios/deletar/{{usuario._id}}"><i class="fas fa-trash-alt" ></i></a></td>
+</tr>
+</table>
+
+<style>
+.hier{
+    text-align: center;
+}
+table, th, td {
+  border: 1px solid black;
+}
+</style>

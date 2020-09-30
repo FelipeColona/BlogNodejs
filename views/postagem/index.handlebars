@@ -1,0 +1,79 @@
+<div class="card">
+    <div class="card-body">
+        <h1>{{postagem.titulo}}</h1>
+        <hr>
+        <small>Data de publicação: {{postagem.data}}</small>
+        <hr>
+        <p>{{postagem.conteudo}}</p>
+    </div>
+</div>
+
+{{#if usuario}}
+<div class="card">
+    <div class="card-body">
+        <form action="/postagem/comentario" method="post">
+            <input type="hidden" name="id" value="{{postagem._id}}">
+            <input type="hidden" name="slug" value="{{postagem.slug}}">
+            <input type="text" name="texto" class="form-control" placeholder="Adicionar um comentário público..."> <br>
+            <button type="submit" class="btn btn-success">Comentar</button>
+        </form>
+    </div>
+</div>
+{{else}}
+{{/if}}
+
+
+<br>
+
+<hr>
+<div class="row mt-3">
+    <div class="col-md-8">
+    <div class="page-header">
+    <h4 class="pull-right">{{tamanho}} Comentários</h4>
+    </div>
+<hr>
+
+
+{{#each response}}
+<form action="/postagem/like" method="post">
+    <input type="hidden" name="idPostagem" value="{{../postagem._id}}">
+    <input type="hidden" name="idComentario" value="{{this.comentarios._id}}">
+        <div class="container">
+            <div class="comments-list">
+                <div class="media">
+                <div class="media-body">              
+                <h4 class="media-heading user_name mt-3">{{this.comentarios.usuario}}</h4>
+                              {{this.comentarios.texto}}
+                {{#if this.comentarios.likes}}       
+                    <p><small><button type="submit" class="butto">Likes - {{this.comentarios.likes}}</button></small></p>
+                {{else}}
+                    <p><small><button type="submit" class="butto">Likes - 0</button></small></p>
+                {{/if}}
+            </div>
+        </div>
+</div>
+</div>
+</form>
+{{/each}}
+
+
+
+<style>
+    .user_name{
+    font-size:14px;
+    font-weight: bold;
+}
+.comments-list .media{
+    border-bottom: 1px solid #ccc;
+}
+
+.butto{
+    background: none;
+	color: dodgerblue;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+</style>
