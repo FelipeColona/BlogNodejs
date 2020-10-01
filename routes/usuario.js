@@ -156,6 +156,28 @@ router.get('/recuperacaosenha/:email', (req, res) => {
 })
 
 router.post('/senhabd', (req, res) => {
+
+    let erros = []
+
+    if (!req.body.Novasenha || typeof req.body.Novasenha === undefined || req.body.Novasenha === null) {
+        erros.push({ texto: 'Senha Inválida' })
+    }
+    
+    if (req.body.Novasenha.length > 25) {
+        erros.push({ texto: 'Senha Excedeu o Tamanho Limite' })
+    }
+
+    if (req.body.Novasenha.length < 4) {
+        erros.push({ texto: 'Senha Muito Curta' })
+    }
+
+    if (erros.length > 0) { 
+        erros.forEach( (obj) => {
+            req.flash('error_msg', ` ${obj.texto}`)
+        })
+        res.redirect(req.get('referer'))
+    }else{
+
     bcrypt.genSalt(10, (erro, salt) => {
         bcrypt.hash(req.body.Novasenha, salt, (erro, hash) => {
             if(erro){
@@ -166,20 +188,11 @@ router.post('/senhabd', (req, res) => {
                     res.redirect('/usuarios/login')
                 }).catch( (err) => {
                     console.log(err)
-                }) 
+                })
             }
         })
     })
-
-
-
-
-
-
-
-
-
-
+    }
 })
 
 module.exports = router
