@@ -166,7 +166,7 @@ router.post('/senhabd', (req, res) => {
                     res.redirect('/usuarios/login')
                 }).catch( (err) => {
                     console.log(err)
-                })
+                }) 
             }
         })
     })
