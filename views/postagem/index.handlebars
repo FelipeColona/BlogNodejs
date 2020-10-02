@@ -1,3 +1,4 @@
+<head><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous"></head>
 <div class="card">
     <div class="card-body">
         <h1>{{postagem.titulo}}</h1>
@@ -41,7 +42,10 @@
         <div class="container">
             <div class="comments-list">
                 <div class="media">
-                <div class="media-body">              
+                <div class="media-body">           
+                    {{#if ../eAdmin}}
+                        <a  class="float-right" href="/admin/postagem/comentario/deletar?idpostagem={{../postagem._id}}&idcomentario={{this.comentarios._id}}"><i class="fas fa-trash-alt" style="color: red;" ></i></a>
+                    {{/if}}   
                 <h4 class="media-heading user_name mt-3">{{this.comentarios.usuario}}</h4>
                               {{this.comentarios.texto}}
                 {{#if this.comentarios.likes}}       

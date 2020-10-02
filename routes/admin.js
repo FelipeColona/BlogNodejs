@@ -13,6 +13,7 @@ const Inscricao = mongoose.model('inscricoes')
 require('../models/Usuario')
 const Usuario = mongoose.model('usuarios')
 const {eAdmin} = require('../helpers/eAdmin') 
+const { decodeBase64 } = require('bcryptjs')
 
 require('dotenv').config()
 
@@ -330,6 +331,21 @@ router.get('/usuarios/deletar/:id', eAdmin, (req, res) => {
     Usuario.deleteOne({_id: req.params.id}).then( () => {
         res.redirect('/admin/usuarios')
     })
+})
+
+/* ?idpostagem&idcomentario */
+
+router.get('/postagem/comentario/deletar', eAdmin, (req, res) => {
+    Postagem.findOneAndUpdate(
+        {"_id" : req.query.idpostagem },
+        {$pull: { comentarios: { "_id" : req.query.idcomentario}}},
+        {$multi: true}
+    ).then( () => {
+        res.redirect(req.get('referer'))
+    }).catch( (err) => {
+        console.log('Didnt wirked...')
+    })
+
 })
 
 module.exports = router
