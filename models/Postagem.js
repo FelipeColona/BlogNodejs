@@ -35,6 +35,13 @@ const Postagem = new Schema({
             texto: String,
             likes: Number,
             usuarios: [String], 
+            replies: [
+                {
+                    usuario: String,
+                    idusuario: String,
+                    texto: String,
+                }
+            ],  
         }
     ]
 })

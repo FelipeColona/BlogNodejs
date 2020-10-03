@@ -41,6 +41,18 @@
 {{#idComparator this.comentarios.idusuario ../idUsuario ../postagem._id this.comentarios._id}}
 {{/idComparator}}
 {{/if}} 
+
+{{#if ../usuario}}
+<form action="/postagem/comentario/responder" method="post">
+    <input type="text" name="textoResposta">
+    <input type="hidden" name="idPostagem" value="{{../postagem._id}}">
+    <input type="hidden" name="idComentario" value="{{this.comentarios._id}}">
+    <input type="hidden" name="idUsuario" value="{{../idUsuario}}">
+    <input type="hidden" name="nomeUsuario" value="{{../usuario}}" >
+    <button type="submit">Responder</button>
+</form>
+{{/if}}
+
 <form action="/postagem/like" method="post">
     <input type="hidden" name="idPostagem" value="{{../postagem._id}}">
     <input type="hidden" name="idComentario" value="{{this.comentarios._id}}">
@@ -58,6 +70,14 @@
                 {{else}}
                     <p><small><button type="submit" class="butto">Likes - 0</button></small></p>
                 {{/if}}
+
+                {{#each ../respostas}}
+
+                <div class="ml-3">
+                    <h6 class="media-heading user_name mt-3" style="font-size: 12px;" >{{this.usuario}}</h6>
+                              <small>{{this.texto}}</small>
+                </div>
+                {{/each}}
             </div>
         </div>
 </div>
@@ -87,3 +107,36 @@
 	outline: inherit;
 }
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{!-- 
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Respostas
+                    </a>
+                              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item"</a>
+            <a class="dropdown-item"</a>
+            <a class="dropdown-item"</a>
+            <a class="dropdown-item"</a>
+        </div>
+                </li
+
+ --}}
