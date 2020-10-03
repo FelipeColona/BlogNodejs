@@ -36,13 +36,18 @@
 
 
 {{#each response}}
+{{#if ../eAdmin}}
+{{else}}
+{{#idComparator this.comentarios.idusuario ../idUsuario ../postagem._id this.comentarios._id}}
+{{/idComparator}}
+{{/if}} 
 <form action="/postagem/like" method="post">
     <input type="hidden" name="idPostagem" value="{{../postagem._id}}">
     <input type="hidden" name="idComentario" value="{{this.comentarios._id}}">
         <div class="container">
             <div class="comments-list">
                 <div class="media">
-                <div class="media-body">           
+                <div class="media-body">      
                     {{#if ../eAdmin}}
                         <a  class="float-right" href="/admin/postagem/comentario/deletar?idpostagem={{../postagem._id}}&idcomentario={{this.comentarios._id}}"><i class="fas fa-trash-alt" style="color: red;" ></i></a>
                     {{/if}}   
@@ -58,6 +63,7 @@
 </div>
 </div>
 </form>
+
 {{/each}}
 
 

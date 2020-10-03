@@ -3,7 +3,6 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
-const { cachedDataVersionTag } = require('v8')
 require('../models/Categoria')
 const Categoria = mongoose.model('categorias')
 require('../models/Postagem')
@@ -13,7 +12,6 @@ const Inscricao = mongoose.model('inscricoes')
 require('../models/Usuario')
 const Usuario = mongoose.model('usuarios')
 const {eAdmin} = require('../helpers/eAdmin') 
-const { decodeBase64 } = require('bcryptjs')
 
 require('dotenv').config()
 
@@ -343,7 +341,8 @@ router.get('/postagem/comentario/deletar', eAdmin, (req, res) => {
     ).then( () => {
         res.redirect(req.get('referer'))
     }).catch( (err) => {
-        console.log('Didnt wirked...')
+        req.flash('error_msg', 'Houve um erro ao deletar comentários')
+        res.redirect(req.get('referer'))
     })
 
 })

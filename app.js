@@ -54,7 +54,22 @@
     // Handlebars
         app.engine('handlebars', handlebars({defaultLayout: 'main'}))
         app.set('view engine', 'handlebars')
+        let hbs = handlebars.create({})
+        hbs.handlebars.registerHelper('idComparator', function(id1, id2, idPostagem, idComentario) {
+            if(id1 == id2){
+                return new hbs.handlebars.SafeString(
+                    `
+                    <form action="/postagem/comentario/deletar" method="post">
+                        <input type="hidden" name="idPostagem" value="${idPostagem}" >
+                        <input type="hidden" name="idComentario" value="${idComentario}">
+                        <button type="submit" class="float-right" style="border: 0; padding: 0; font-size: 100%; font-family: inherit; margin: 0; line-height: 1.15;" ><i class="fas fa-trash-alt" style="color: red;"></i></button>
+                    </form>
 
+                    `
+                )
+            }
+          })
+        
 
     // Mongoose
 
@@ -115,7 +130,7 @@
             if(req.isAuthenticated()){
                 Postagem.findOne({slug: req.params.slug}).lean().then( (postagem) => {
                     if(postagem){
-                      res.render('postagem/index', {postagem: postagem, usuario: req.user.nome, response: response, eAdmin: req.user.eAdmin, nome: req.user.nome, tamanho: postagem.comentarios.length})
+                      res.render('postagem/index', {postagem: postagem, usuario: req.user.nome, response: response, eAdmin: req.user.eAdmin, nome: req.user.nome, tamanho: postagem.comentarios.length, idUsuario: req.user._id})
                     }else{
                       req.flash('error_msg', 'Esta postagem não existe')
                       res.redirect('/')
@@ -142,11 +157,26 @@
 
     app.post('/postagem/comentario', (req, res) => {
         Postagem.findOne({_id: req.body.id}).then( (postagem) => {
-            postagem.comentarios.push({usuario: req.user.nome, texto: `${req.body.texto}`})
+            postagem.comentarios.push({usuario: req.user.nome, idusuario: req.user._id, texto: `${req.body.texto}`})
             postagem.save()
         })
         res.redirect(`/postagem/${req.body.slug}`)
     })
+
+
+    app.post('/postagem/comentario/deletar', (req, res) => {
+        Postagem.findOneAndUpdate(
+            {"_id" : req.body.idPostagem },
+            {$pull: { comentarios: { "_id" : req.body.idComentario}}},
+            {$multi: true}
+        ).then( () => {
+            res.redirect(req.get('referer'))
+        }).catch( (err) => {
+            req.flash('error_msg', 'Houve um erro ao deletar comentários')
+            res.redirect(req.get('referer'))
+        })
+    })
+
 
     app.post('/postagem/like', (req, res) => {
         if(req.isAuthenticated()){

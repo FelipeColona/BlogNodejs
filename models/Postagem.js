@@ -31,6 +31,7 @@ const Postagem = new Schema({
         
         {   
             usuario: String,
+            idusuario: String,
             texto: String,
             likes: Number,
             usuarios: [String], 
