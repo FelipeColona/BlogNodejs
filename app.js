@@ -130,15 +130,7 @@
             if(req.isAuthenticated()){
                 Postagem.findOne({slug: req.params.slug}).lean().then( (postagem) => {
                     if(postagem){
-                        let respostas = [];
-                        postagem.comentarios.forEach( (comentario) => {
-                            if(comentario.replies !== undefined){  
-                                comentario.replies.forEach( (replyObj) => {
-                                respostas.push(replyObj)
-                                })
-                            }
-                        })
-                        res.render('postagem/index', {postagem: postagem, usuario: req.user.nome, response: response, eAdmin: req.user.eAdmin, nome: req.user.nome, tamanho: postagem.comentarios.length, idUsuario: req.user._id, respostas: respostas})
+                        res.render('postagem/index', {postagem: postagem, usuario: req.user.nome, response: response, eAdmin: req.user.eAdmin, nome: req.user.nome, tamanho: postagem.comentarios.length, idUsuario: req.user._id,})
                     }else{
                       req.flash('error_msg', 'Esta postagem não existe')
                       res.redirect('/')
@@ -187,21 +179,25 @@
 
 
     app.post('/postagem/comentario/responder', (req, res) => {
+        if(req.body.textoResposta){
+            let respostaDados = {
+                usuario: req.body.nomeUsuario,
+                idusuario: req.body.idUsuario,
+                texto: req.body.textoResposta,
+            }
 
-        let respostaDados = {
-            usuario: req.body.nomeUsuario,
-            idusuario: req.body.idUsuario,
-            texto: req.body.textoResposta,
-        }
-
-        Postagem.findOne({_id: req.body.idPostagem}).then( (postagem) => {
-            const postagemEncontrada = postagem.comentarios.find( (comentario) => {
-                return comentario._id == req.body.idComentario
+            Postagem.findOne({_id: req.body.idPostagem}).then( (postagem) => {
+                const postagemEncontrada = postagem.comentarios.find( (comentario) => {
+                    return comentario._id == req.body.idComentario
+                })
+                postagemEncontrada.replies.push(respostaDados)
+                postagem.save()
+                res.redirect(req.get('referer'))
             })
-            postagemEncontrada.replies.push(respostaDados)
-            postagem.save()
+        }else{
+            req.flash('error_msg', 'Texto inválido')
             res.redirect(req.get('referer'))
-        })
+        }
     })
 
 

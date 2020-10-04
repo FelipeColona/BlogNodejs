@@ -44,12 +44,15 @@
 
 {{#if ../usuario}}
 <form action="/postagem/comentario/responder" method="post">
-    <input type="text" name="textoResposta">
+    <span onclick="clicar('{{@index}}')" class="float-right" id="trigger{{@index}}"><i class="fas fa-reply" style="cursor: pointer;" ></i></span>
+    <div class="form-group row">
+        <input type="text" class="form-control col-xs-3 float-right ml-3 mt-3" placeholder="Adicione uma resposta pública..." style="display: none;" id="input{{@index}}" name="textoResposta">
+    </div>
     <input type="hidden" name="idPostagem" value="{{../postagem._id}}">
     <input type="hidden" name="idComentario" value="{{this.comentarios._id}}">
     <input type="hidden" name="idUsuario" value="{{../idUsuario}}">
     <input type="hidden" name="nomeUsuario" value="{{../usuario}}" >
-    <button type="submit">Responder</button>
+    <button type="submit" style="display: none;" class="btn-success float-right ml-3" id="button{{@index}}" >Responder</button>
 </form>
 {{/if}}
 
@@ -63,21 +66,25 @@
                     {{#if ../eAdmin}}
                         <a  class="float-right" href="/admin/postagem/comentario/deletar?idpostagem={{../postagem._id}}&idcomentario={{this.comentarios._id}}"><i class="fas fa-trash-alt" style="color: red;" ></i></a>
                     {{/if}}   
-                <h4 class="media-heading user_name mt-3">{{this.comentarios.usuario}}</h4>
+                <h4 class="media-heading user_name mt-4">{{this.comentarios.usuario}}</h4>
                               {{this.comentarios.texto}}
                 {{#if this.comentarios.likes}}       
-                    <p><small><button type="submit" class="butto">Likes - {{this.comentarios.likes}}</button></small></p>
+                    <p><small><button type="submit" class="butto">Likes - {{this.comentarios.likes}}</button> <button>Responder</button> </small></p>
                 {{else}}
                     <p><small><button type="submit" class="butto">Likes - 0</button></small></p>
                 {{/if}}
-
-                {{#each ../respostas}}
-
-                <div class="ml-3">
-                    <h6 class="media-heading user_name mt-3" style="font-size: 12px;" >{{this.usuario}}</h6>
-                              <small>{{this.texto}}</small>
+                {{#if this.comentarios.replies}}
+                <small onclick="clicarRespostas('{{@index}}')" id="spanTrigger{{@index}}" style="cursor: pointer;" >Ver Respostas</small>
+                {{/if}}
+                <div id="respostas{{@index}}" class="card mb-4" style="display: none;" >
+                    {{#each this.comentarios.replies}}
+                    <h4 class="media-heading user_name mt-3 ml-3" style="font-size: 12px;">{{this.usuario}}</h4>
+                    <small class="ml-3">{{this.texto}}</small>
+                    {{/each}}
                 </div>
-                {{/each}}
+                
+
+
             </div>
         </div>
 </div>
@@ -111,32 +118,27 @@
 
 
 
+<script>
+    function clicar(id){
+        const lugarButton = document.getElementById(`button${id}`)
+        lugarButton.style.display = 'inherit'
 
+        const lugarInput = document.getElementById(`input${id}`)
+        lugarInput.style.display = 'inherit'
+        
+        const lugarTrigger = document.getElementById(`trigger${id}`)
+        lugarTrigger.style.display = 'none'
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-{{!-- 
-
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Respostas
-                    </a>
-                              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item"</a>
-            <a class="dropdown-item"</a>
-            <a class="dropdown-item"</a>
-            <a class="dropdown-item"</a>
-        </div>
-                </li
-
- --}}
+    function clicarRespostas(id){
+        const lugarDiv = document.getElementById(`respostas${id}`)
+        const spanTrigger = document.getElementById(`spanTrigger${id}`)
+        if(lugarDiv.style.display == 'none'){
+        lugarDiv.style.display = 'inherit'
+        spanTrigger.innerText= 'Ocultar Respostas'
+        }else{
+            lugarDiv.style.display = 'none'
+            spanTrigger.innerText= 'Ver Respostas'
+        }
+    }
+</script>
