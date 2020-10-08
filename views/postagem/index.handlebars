@@ -79,6 +79,10 @@
                 <div id="respostas{{@index}}" class="card mb-4" style="display: none;" >
                     {{#each this.comentarios.replies}}
                     <h4 class="media-heading user_name mt-3 ml-3" style="font-size: 12px;">{{this.usuario}}</h4>
+                    {{#if ../../usuario}}
+                    {{#idReplies ../../idUsuario this.idusuario ../../postagem._id ../this.comentarios._id @index}}
+                    {{/idReplies}}
+                    {{/if}}
                     <small class="ml-3">{{this.texto}}</small>
                     {{/each}}
                 </div>

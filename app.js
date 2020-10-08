@@ -70,6 +70,17 @@
             }
           })
         
+        hbs.handlebars.registerHelper('idReplies', function(id1, id2, idPostagem, idComentario, indexResposta){
+            if(id1 == id2){
+                return new hbs.handlebars.SafeString(
+                    `
+                    <a href="/postagem/comentario/respostas/deletar?idpostagem=${idPostagem}&idcomentario=${idComentario}&indexresposta=${indexResposta}" class="float-right" ><i class="fas fa-trash-alt" style="color: red;"></i></a>
+
+                    `
+                )
+            }
+        })
+        
 
     // Mongoose
 
@@ -200,6 +211,23 @@
         }
     })
 
+    app.get('/postagem/comentario/respostas/deletar', (req, res) => {
+        Postagem.findOne({_id: req.query.idpostagem}).then( (postagem) => {
+            const indexresposta = parseInt(req.query.indexresposta)
+            postagem.comentarios.forEach( (comentario) => {
+                if(comentario._id == req.query.idcomentario){
+                    if(comentario.replies[indexresposta].idusuario == req.user._id){
+                        comentario.replies.splice(indexresposta, 1)
+                        postagem.save()
+                        res.redirect(req.get('referer'))
+                    }else{
+                        req.flash('error_msg', 'ERROR')
+                        res.redirect('/')
+                    }
+                }
+            })
+        })
+    })
 
 
     app.post('/postagem/like', (req, res) => {
