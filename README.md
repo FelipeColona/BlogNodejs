@@ -1,7 +1,7 @@
 # BlogNodejs
 
 ## Resumo do Projeto
-  Iniciei ele por conta de um [curso](https://www.youtube.com/watch?v=LLqq6FemMNQ&list=PLJ_KhUnlXUPtbtLwaxxUxHqvcNQndmI4B) de Nodejs no Youtube, sendo ele o último projeto prático, e resolvi implementar algumas novas features como: newsletter, painel administrativo, sistema de "Esqueceu a senha?", aba de comentários, respostas aos comentários, sistema de likes e verificação de email utilizando JWT.    
+  O iniciei por conta de um [curso](https://www.youtube.com/watch?v=LLqq6FemMNQ&list=PLJ_KhUnlXUPtbtLwaxxUxHqvcNQndmI4B) de Nodejs no Youtube, sendo ele o último projeto prático, e resolvi implementar algumas novas features como: newsletter, painel administrativo, sistema de "Esqueceu a senha?", aba de comentários, respostas aos comentários, sistema de likes e verificação de email utilizando JWT.    
 
 ## Principais Tecnologias Utilizadas:
   - Nodejs
